@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchTickets() {
       try {
-        const response = await fetch('/api/tickets/tickets');
+        const response = await fetch('/api/tickets');
         if (!response.ok) {
           throw new Error('Failed to fetch tickets');
         }
@@ -25,8 +25,6 @@ export default function Home() {
     }
     fetchTickets();
   }, []);
-
-  console.log(tickets);
 
   return (
     <div></div>
