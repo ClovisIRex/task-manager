@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { PrismaClient } from '@prisma/client'
 import React, { useState, useEffect } from 'react';
+import KanbanBoard from "@/components/Kanban/KanbanBoard";
 
 const inter = Inter({ subsets: ["latin"] });
 const prisma = new PrismaClient()
@@ -27,7 +28,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div></div>
+    <div className="App">
+      <KanbanBoard />
+    </div>
     // <main
     //   className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     // >
