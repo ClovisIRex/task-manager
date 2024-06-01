@@ -15,16 +15,19 @@ const KanbanBoard = () => {
   const [data, setData] = useState({
     tasks: tasks,
     columns: {
+      'Unassigned': getTasksByStatus('Unassigned', tasks),
       'ToDo': getTasksByStatus('ToDo', tasks),
       'In Progress': getTasksByStatus('In Progress', tasks),
       'Done': getTasksByStatus('Done', tasks)
     },
     colors: {
+      'Unassigned': "bg-red-100",
       'ToDo': "bg-blue-100",
       'In Progress': "bg-yellow-100",
       'Done': "bg-green-100"
     },
     ids: {
+      'Unassigned': 0,
       'ToDo': 1,
       'In Progress': 2,
       'Done': 3
