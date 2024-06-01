@@ -1,9 +1,12 @@
 import React from 'react';
-import styled from "styled-components";
 
-const KanbanCard = ({ task, index }) => {
+const KanbanCard = ({ task, index, openEditModal }) => {
+  const handleClick = () => {
+    openEditModal(task); // Open the edit modal and pass the selected task
+  };
+
   return (
-    <div className="p-4 bg-white rounded shadow cursor-pointer">
+    <div className="p-4 bg-white rounded shadow cursor-pointer" onClick={handleClick}>
       <h3 className="font-bold">{task.title}</h3>
       <p>{task.description}</p>
       <p>Owner: {task.owner}</p>
