@@ -12,23 +12,24 @@ const KanbanBoard = () => {
   };
 
   const tasks = mockTasks;
+  const tickets = mockTickets;
 
   const [data, setData] = useState({
     tasks: tasks,
     columns: {
-      'Tickets': getTasksByStatus('Tickets', tasks),
+      'Ticket': getTasksByStatus('Tickets', tasks),
       'To Do': getTasksByStatus('To Do', tasks),
       'In Progress': getTasksByStatus('In Progress', tasks),
       'Done': getTasksByStatus('Done', tasks)
     },
     colors: {
-      'Tickets': "bg-red-100",
+      'Ticket': "bg-red-100",
       'To Do': "bg-blue-100",
       'In Progress': "bg-yellow-100",
       'Done': "bg-green-100"
     },
     ids: {
-      'Tickets': 0,
+      'Ticket': 0,
       'To Do': 1,
       'In Progress': 2,
       'Done': 3
@@ -72,19 +73,22 @@ const KanbanBoard = () => {
       </Modal>
       )}
       <Header />
-      <div className="grid grid-cols-4 gap-4 mt-4">
-        {Object.keys(data.columns).map((column) => (
-          <KanbanColumn
-            key={column}
-            title={column}
-            tasks={data.columns[column]}
-            color={data.colors[column]}
-            id={data.ids[column]}
-            openEditModal={openEditModal} // Pass the function to the KanbanColumn
-          />
-        ))}
-      </div>
+
       
+      {Object.keys(tickets).map((ticket) => (
+          <div className="grid grid-cols-4 gap-4 mt-4">
+          {Object.keys(data.columns).map((column) => (
+            <KanbanColumn
+              key={column}
+              title={column}
+              tasks={data.columns[column]}
+              color={data.colors[column]}
+              id={data.ids[column]}
+              openEditModal={openEditModal} // Pass the function to the KanbanColumn
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
