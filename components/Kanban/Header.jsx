@@ -42,7 +42,7 @@ const Header = () => {
               >
                 Ticket
               </button>
-              <a href="#" className="block px-4 py-2 text-red-500 hover:bg-red-100 cursor-pointer">Bug</a>
+              <a href="#" className="block px-4 py-2 text-red-500 hover:bg-red-100 cursor-pointer">Task</a>
             </div>
           )}
         </div>

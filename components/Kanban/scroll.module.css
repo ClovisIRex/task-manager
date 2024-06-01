@@ -9,3 +9,11 @@
 .column::-webkit-scrollbar {
     display: none;
 }
+
+/* Inside scroll.module.css */
+.card-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  

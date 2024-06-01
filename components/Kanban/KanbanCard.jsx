@@ -1,4 +1,6 @@
 import React from 'react';
+import styles from "./scroll.module.css";
+
 
 const KanbanCard = ({ task, index, openEditModal }) => {
   const handleClick = () => {
@@ -6,12 +8,13 @@ const KanbanCard = ({ task, index, openEditModal }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow cursor-pointer" onClick={handleClick}>
+    <div className={`p-4 bg-white rounded-lg shadow cursor-pointer ${styles.card}`} onClick={handleClick}>
       <h3 className="font-bold">{task.title}</h3>
-      <p>{task.description}</p>
-      <p>Owner: {task.owner}</p>
-      <p>Due: {task.dueDate}</p>
-      <p>Priority: {task.priority}</p>
+      <div className={styles['card-content']}>
+        <p>Owner: {task.owner}</p>
+        <p>Due: {task.dueDate}</p>
+        <p>Priority: {task.priority}</p>
+      </div>
     </div>
   );
 };

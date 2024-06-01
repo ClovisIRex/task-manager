@@ -4,6 +4,7 @@ import KanbanColumn from './KanbanColumn';
 import EditTaskModal from '../Modals/EditTask';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
+import Modal from '../Modals/CreateTicket';
 
 const KanbanBoard = () => {
   const getTasksByStatus = (status, tasks) => {
@@ -15,20 +16,20 @@ const KanbanBoard = () => {
   const [data, setData] = useState({
     tasks: tasks,
     columns: {
-      'Unassigned': getTasksByStatus('Unassigned', tasks),
-      'ToDo': getTasksByStatus('ToDo', tasks),
+      'Tickets': getTasksByStatus('Tickets', tasks),
+      'To Do': getTasksByStatus('To Do', tasks),
       'In Progress': getTasksByStatus('In Progress', tasks),
       'Done': getTasksByStatus('Done', tasks)
     },
     colors: {
-      'Unassigned': "bg-red-100",
-      'ToDo': "bg-blue-100",
+      'Tickets': "bg-red-100",
+      'To Do': "bg-blue-100",
       'In Progress': "bg-yellow-100",
       'Done': "bg-green-100"
     },
     ids: {
-      'Unassigned': 0,
-      'ToDo': 1,
+      'Tickets': 0,
+      'To Do': 1,
       'In Progress': 2,
       'Done': 3
     },
@@ -48,7 +49,28 @@ const KanbanBoard = () => {
   };
 
   return (
+
+    
     <div className="p-4">
+      
+
+    {data.isEditModalOpen && (
+        <Modal isOpen={data.isEditModalOpen} onClose={closeEditModal}>
+        <h2>Create Ticket</h2>
+        <form>
+          <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <select className="border rounded p-2 w-full mb-2 cursor-pointer">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create</button>
+        </form>
+      </Modal>
+      )}
       <Header />
       <div className="grid grid-cols-4 gap-4 mt-4">
         {Object.keys(data.columns).map((column) => (
@@ -62,12 +84,7 @@ const KanbanBoard = () => {
           />
         ))}
       </div>
-      {/* {data.isEditModalOpen && (
-        <EditTaskModal
-          task={data.selectedTask}
-          onClose={closeEditModal} // Pass the close function to the modal
-        />
-      )} */}
+      
     </div>
   );
 };
