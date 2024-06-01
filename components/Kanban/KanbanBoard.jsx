@@ -34,7 +34,6 @@ const KanbanBoard = () => {
   return (
     <div className="p-4">
       <Header />
-      <DragDropContext>
         <div className="grid grid-cols-4 gap-4 mt-4">
           {Object.keys(data.columns).map((column) => (
             <KanbanColumn
@@ -46,7 +45,6 @@ const KanbanBoard = () => {
             />
           ))}
         </div>
-      </DragDropContext>
     </div>
   );
 };
