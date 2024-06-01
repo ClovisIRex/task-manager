@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Header from './Header';
-import KanbanColumn from './KanbanColumn';
+import KanbanRow from './KanbanRow';
 import EditTaskModal from '../Modals/EditTask';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
@@ -22,21 +22,24 @@ const KanbanBoard = () => {
     tasks: tasks,
     columns: {
       'Ticket': getTicketsById('Tickets', tickets),
+      'Unassigned': getTasksByStatus('Unassigned', tasks),
       'To Do': getTasksByStatus('To Do', tasks),
       'In Progress': getTasksByStatus('In Progress', tasks),
       'Done': getTasksByStatus('Done', tasks)
     },
     colors: {
       'Ticket': "bg-red-100",
+      'Unassigned': "bg-purple-100",
       'To Do': "bg-blue-100",
       'In Progress': "bg-yellow-100",
       'Done': "bg-green-100"
     },
     ids: {
       'Ticket': 0,
-      'To Do': 1,
-      'In Progress': 2,
-      'Done': 3
+      'Unassigned': 1,
+      'To Do': 2,
+      'In Progress': 3,
+      'Done': 4
     },
     selectedTask: null, // State to store the selected task
     isEditModalOpen: false // State to manage the modal visibility
@@ -44,6 +47,7 @@ const KanbanBoard = () => {
 
   // Function to open the edit task modal and set the selected task
   const openEditModal = (task) => {
+    console.log(task);
     setData(prevData => ({ ...prevData, selectedTask: task, isEditModalOpen: true }));
   };
 
@@ -73,19 +77,13 @@ const KanbanBoard = () => {
       )}
       <Header />
       {Object.keys(tickets).map((ticket, ticketIndex) => (
-        <div className="grid grid-cols-4 gap-4 mt-4" key={ticketIndex}>
-          {Object.keys(data.columns).map((column) => (
-            <KanbanColumn
-              key={`${ticketIndex}-${column}`}
-              title={column}
-              tasks={data.columns[column]}
-              color={data.colors[column]}
-              id={data.ids[column]}
-              ticketId={ticket.id}
-              openEditModal={openEditModal} // Pass the function to the KanbanColumn
-            />
-          ))}
-        </div>
+        <KanbanRow
+          key ={ticketIndex} 
+          ticketIndex ={ticketIndex}
+          ticket = {ticket}
+          openEditModal ={openEditModal}
+          data = {data}
+        />
       ))}
     </div>
   );
