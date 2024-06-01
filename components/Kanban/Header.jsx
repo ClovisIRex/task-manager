@@ -22,15 +22,15 @@ const Header = () => {
     <div>
       <div className="flex justify-between items-center p-4 bg-gray-100 rounded">
         <div className="flex space-x-2">
-          <input type="date" className="border rounded p-2" />
+          <input type="date" className="border rounded p-2 cursor-pointer" />
           <span>-</span>
-          <input type="date" className="border rounded p-2" />
+          <input type="date" className="border rounded p-2 cursor-pointer" />
         </div>
-        <h1 className='app-title'>Task Management Application</h1>
+        <h1 className='app-title text-xl font-bold'>Task Management Application</h1>
         <div className="relative">
           <button 
             onClick={toggleDropdown} 
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
           >
             Add a new ↓
           </button>
@@ -51,11 +51,11 @@ const Header = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <h2>Create Ticket</h2>
         <form>
-          <input placeholder="Title" className="border rounded p-2 w-full mb-2" />
-          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2" />
-          <input placeholder="Owner" className="border rounded p-2 w-full mb-2" />
-          <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2" />
-          <select className="border rounded p-2 w-full mb-2">
+          <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <select className="border rounded p-2 w-full mb-2 cursor-pointer">
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
