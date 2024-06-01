@@ -10,7 +10,6 @@ export default function Home() {
 
   const [tickets, setTickets] = useState([]);
 
-
   // useEffect(() => {
   //   async function fetchTickets() {
   //     try {

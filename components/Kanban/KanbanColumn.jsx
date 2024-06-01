@@ -13,20 +13,22 @@ const KanbanColumn = ({ title, color, tasks, id }) => {
       <h2 className="text-xl font-bold mb-4">{title}</h2>
       <div className="space-y-4">
 
-      <Droppable droppableId={id}>
+      {/* <Droppable droppableId={id}>
                 {(provided, snapshot) => (
                     <TaskList
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         isDraggingOver={snapshot.isDraggingOver}
                     >
-                        {tasks.map((task, index) => (
-                            <KanbanCard key={index} index={index} task={task} />
-                        ))}
+                        
                         {provided.placeholder}
                     </TaskList>
                 )}
-        </Droppable>
+        </Droppable> */}
+
+        {tasks.map((task, index) => (
+           <KanbanCard key={index} index={index} task={task} />
+        ))}
       </div>
     </div>
   );
