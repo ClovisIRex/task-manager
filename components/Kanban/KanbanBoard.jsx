@@ -10,6 +10,10 @@ const KanbanBoard = () => {
   const getTasksByStatus = (status, tasks) => {
     return Object.values(tasks).filter(task => task.status === status);
   };
+  
+  const getTicketsById = (id, tickets) => {
+    return Object.values(tickets).filter(ticket => ticket.id === id);
+  };
 
   const tasks = mockTasks;
   const tickets = mockTickets;
@@ -17,7 +21,7 @@ const KanbanBoard = () => {
   const [data, setData] = useState({
     tasks: tasks,
     columns: {
-      'Ticket': getTasksByStatus('Tickets', tasks),
+      'Ticket': getTicketsById('Tickets', tickets),
       'To Do': getTasksByStatus('To Do', tasks),
       'In Progress': getTasksByStatus('In Progress', tasks),
       'Done': getTasksByStatus('Done', tasks)
@@ -40,7 +44,6 @@ const KanbanBoard = () => {
 
   // Function to open the edit task modal and set the selected task
   const openEditModal = (task) => {
-    console.log(task);
     setData(prevData => ({ ...prevData, selectedTask: task, isEditModalOpen: true }));
   };
 
@@ -50,40 +53,35 @@ const KanbanBoard = () => {
   };
 
   return (
-
-    
     <div className="p-4">
-      
-
-    {data.isEditModalOpen && (
+      {data.isEditModalOpen && (
         <Modal isOpen={data.isEditModalOpen} onClose={closeEditModal}>
-        <h2>Create Ticket</h2>
-        <form>
-          <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <select className="border rounded p-2 w-full mb-2 cursor-pointer">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create</button>
-        </form>
-      </Modal>
+          <h2>Create Ticket</h2>
+          <form>
+            <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <select className="border rounded p-2 w-full mb-2 cursor-pointer">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create</button>
+          </form>
+        </Modal>
       )}
       <Header />
-
-      
-      {Object.keys(tickets).map((ticket) => (
-          <div className="grid grid-cols-4 gap-4 mt-4">
+      {Object.keys(tickets).map((ticket, ticketIndex) => (
+        <div className="grid grid-cols-4 gap-4 mt-4" key={ticketIndex}>
           {Object.keys(data.columns).map((column) => (
             <KanbanColumn
-              key={column}
+              key={`${ticketIndex}-${column}`}
               title={column}
               tasks={data.columns[column]}
               color={data.colors[column]}
               id={data.ids[column]}
+              ticketId={ticket.id}
               openEditModal={openEditModal} // Pass the function to the KanbanColumn
             />
           ))}

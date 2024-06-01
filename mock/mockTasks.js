@@ -1,6 +1,7 @@
 const mockTickets = {
   'ticket-1': {
-    title: 'Task 1',
+    id: 1,
+    title: 'Ticket 1',
     owner: 'John',
     status: 'To Do',
     dueDate: '2024-06-01',
@@ -9,7 +10,8 @@ const mockTickets = {
   },
 
   'ticket-2': {
-    title: 'Task 2',
+    id: 2,
+    title: 'Ticket 2',
     owner: 'John',
     status: 'To Do',
     dueDate: '2024-06-01',
