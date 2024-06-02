@@ -2,9 +2,10 @@ import { Inter } from "next/font/google";
 import { PrismaClient } from '@prisma/client'
 import React, { useState, useEffect } from 'react';
 import KanbanBoard from "@/components/Kanban/KanbanBoard";
+import KanbanProvider from '@/components/Kanban/Context/KanbanProvider';
 
 const inter = Inter({ subsets: ["latin"] });
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 export default function Home() {
 
@@ -28,7 +29,10 @@ export default function Home() {
 
   return (
     <div className="App">
-      <KanbanBoard />
+      <KanbanProvider>
+        <KanbanBoard />
+      </KanbanProvider>
+     
     </div>
   );
 }
