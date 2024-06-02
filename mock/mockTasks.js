@@ -6,7 +6,7 @@ const mockTickets = {
     status: 'To Do',
     dueDate: '2024-06-01',
     priority: 'Low',
-    tasks: [2,3]
+    tasks: [2,3,5]
   },
 
   'ticket-2': {
@@ -56,6 +56,16 @@ const mockTasks = {
       status: 'Done',
       dueDate: '2024-06-04',
       priority: 'Critical'
+  },
+
+  'task-5': {
+    id: 5,
+    title: 'Task 5',
+    description: 'task5 desc',
+    owner: 'Robert',
+    status: 'Unassigned',
+    dueDate: '2024-06-04',
+    priority: 'Critical'
   }
 }
 

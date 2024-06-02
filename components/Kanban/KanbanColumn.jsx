@@ -6,7 +6,7 @@ import styles from "./scroll.module.css";
 const KanbanColumn = ({ title,tasks, color, id, ticketId,ticket, openEditModal }) => {
   const isSingleCardLayout = id === 0;
 
-  const getTasksForColumn = (ticket) => {
+  const getTasksForColumn = () => {
     return Object.values(tasks).filter(task => task.status === title);
   };
 
