@@ -5,7 +5,7 @@ const mockTickets = {
     owner: 'John',
     status: 'To Do',
     dueDate: '2024-06-01',
-    priority: 1,
+    priority: 'Low',
     tasks: [2,3]
   },
 
@@ -15,7 +15,7 @@ const mockTickets = {
     owner: 'John',
     status: 'To Do',
     dueDate: '2024-06-01',
-    priority: 1,
+    priority: 'Low',
     tasks: [1,4]
   },
 }
@@ -28,7 +28,7 @@ const mockTasks = {
       owner: 'John',
       status: 'To Do',
       dueDate: '2024-06-01',
-      priority: 1
+      priority: 'Low'
   },
   'task-2': {
       id: 2,
@@ -37,7 +37,7 @@ const mockTasks = {
       owner: 'Jane',
       status: 'To Do',
       dueDate: '2024-06-02',
-      priority: 2
+      priority: 'Medium'
   },
   'task-3': {
       id: 3,
@@ -46,7 +46,7 @@ const mockTasks = {
       owner: 'Doe',
       status: 'In Progress',
       dueDate: '2024-06-03',
-      priority: 3
+      priority: 'High'
   },
   'task-4': {
       id: 4,
@@ -55,7 +55,7 @@ const mockTasks = {
       owner: 'Alice',
       status: 'Done',
       dueDate: '2024-06-04',
-      priority: 4
+      priority: 'Critical'
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import Header from './Header';
 import KanbanRow from './KanbanRow';
 import EditTaskModal from '../Modals/EditTask';
+import EditTicketModal from '../Modals/EditTicket';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
 import Modal from '../Modals/CreateTicket';
@@ -10,26 +11,19 @@ import KanbanContext from './Context/KanbanContext';
 const KanbanBoard = () => {
   const { kanbanData, setKanbanData } = useContext(KanbanContext); // Access the contex
 
-  const getTasksByStatus = (status, tasks) => {
-    return Object.values(tasks).filter(task => task.status === status);
-  };
-  
-  const getTicketsById = (id, tickets) => {
-    return Object.values(tickets).filter(ticket => ticket.id === id);
-  };
-
   const tasks = mockTasks;
   const tickets = mockTickets;
 
   const [data, setData] = useState({
     tasks: tasks,
-    columns: {
-      'Ticket': getTicketsById('Tickets', tickets),
-      'Unassigned': getTasksByStatus('Unassigned', tasks),
-      'To Do': getTasksByStatus('To Do', tasks),
-      'In Progress': getTasksByStatus('In Progress', tasks),
-      'Done': getTasksByStatus('Done', tasks)
-    },
+    tickets: tickets,
+    columns: [
+      'Ticket',
+      'Unassigned',
+      'To Do',
+      'In Progress',
+      'Done'
+    ],
     colors: {
       'Ticket': "bg-red-100",
       'Unassigned': "bg-purple-100",
@@ -50,7 +44,6 @@ const KanbanBoard = () => {
 
   // Function to open the edit task modal and set the selected task
   const openEditModal = (task) => {
-    console.log(task);
     setData(prevData => ({ ...prevData, selectedTask: task, isEditModalOpen: true }));
   };
 
@@ -79,11 +72,11 @@ const KanbanBoard = () => {
         </Modal>
       )}
       <Header />
-      {Object.keys(tickets).map((ticket, ticketIndex) => (
+      {Object.entries(tickets).map((ticket, ticketIndex) => (
         <KanbanRow
           key ={ticketIndex} 
           ticketIndex ={ticketIndex}
-          ticket = {ticket}
+          ticket = {ticket[1]}
           openEditModal ={openEditModal}
           data = {data}
         />
