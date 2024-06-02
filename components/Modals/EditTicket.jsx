@@ -1,12 +1,14 @@
-import React from 'react';
-
 const EditTicketModal = ({ ticket, onClose }) => {
-  // Add your modal UI and editing logic here
+  // Logic for editing ticket
   return (
     <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        {/* Display ticket details and edit form */}
+        {/* Edit ticket form */}
+        <h2>Edit Ticket</h2>
+        <form>
+          {/* Form inputs for editing ticket */}
+        </form>
       </div>
     </div>
   );

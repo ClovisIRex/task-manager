@@ -1,9 +1,8 @@
 import React from 'react';
 import KanbanCard from './KanbanCard';
-import { Droppable } from 'react-beautiful-dnd';
 import styles from "./scroll.module.css";
 
-const KanbanColumn = ({ title,tasks, color, id, ticketId,ticket, openEditModal }) => {
+const KanbanColumn = ({ title,tasks, color, id, ticketId,ticket, openEditTaskModal,openEditTicketModal }) => {
   const isSingleCardLayout = id === 0;
 
   const getTasksForColumn = () => {
@@ -19,11 +18,11 @@ const KanbanColumn = ({ title,tasks, color, id, ticketId,ticket, openEditModal }
 
       {isSingleCardLayout ? (
           (
-            <KanbanCard isTicket={true} key={ticketId} task={ticket} openEditModal={openEditModal} />
+            <KanbanCard isTicket={true} key={ticketId} task={ticket} openEditTaskModal={openEditTicketModal} />
           )
         ) : (
           tasksForColumn.map((task, index) => (
-            <KanbanCard isTicket={false} key={index} index={index} task={task} openEditModal={openEditModal} />
+            <KanbanCard isTicket={false} key={index} index={index} task={task} openEditTaskModal={openEditTaskModal} />
           ))
       )}
 

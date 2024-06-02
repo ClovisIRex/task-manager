@@ -1,7 +1,7 @@
 import React from 'react';
 import KanbanColumn from './KanbanColumn';
 
-const KanbanRow = ({ ticketIndex, ticket, openEditModal, data}) => {
+const KanbanRow = ({ ticketIndex, ticket, openEditTaskModal,openEditTicketModal, data}) => {
   // Function to retrieve tasks for a specific ticket
   const getTasksForTicket = (ticket) => {
     let tasksIds = ticket.tasks
@@ -22,7 +22,8 @@ const KanbanRow = ({ ticketIndex, ticket, openEditModal, data}) => {
           id={data.ids[column]}
           ticketId={ticket.id}
           ticket={ticket}
-          openEditModal={openEditModal} // Pass the function to the KanbanColumn
+          openEditTaskModal={openEditTaskModal}
+          openEditTicketModal={openEditTicketModal}
         />
       ))}
     </div>

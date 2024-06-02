@@ -1,15 +1,20 @@
 import React, { useState, useContext } from 'react';
 import Header from './Header';
 import KanbanRow from './KanbanRow';
-import EditTaskModal from '../Modals/EditTask';
-import EditTicketModal from '../Modals/EditTicket';
-import { DragDropContext } from 'react-beautiful-dnd';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
-import Modal from '../Modals/CreateTicket';
-import KanbanContext from './Context/KanbanContext';
+import Modal from '../Modals/Modal';
 
 const KanbanBoard = () => {
-  const { kanbanData, setKanbanData } = useContext(KanbanContext); // Access the contex
+
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
+  const [isEditTicketModalOpen, setIsEditTicketModalOpen] = useState(false);
+  const [isCreateTicketModalOpen, setIsCreateTicketModalOpen] = useState(false);
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+
+
+
 
   const tasks = mockTasks;
   const tickets = mockTickets;
@@ -37,47 +42,147 @@ const KanbanBoard = () => {
       'To Do': 2,
       'In Progress': 3,
       'Done': 4
-    },
-    selectedTask: null, // State to store the selected task
-    isEditModalOpen: false // State to manage the modal visibility
+    }
   });
 
-  // Function to open the edit task modal and set the selected task
-  const openEditModal = (task) => {
-    setData(prevData => ({ ...prevData, selectedTask: task, isEditModalOpen: true }));
+  // Edit Task modal handlers
+  const openEditTaskModal = (task) => {
+    setSelectedTask(task);
+    setIsEditTaskModalOpen(true);
   };
 
-  // Function to close the edit task modal
-  const closeEditModal = () => {
-    setData(prevData => ({ ...prevData, isEditModalOpen: false }));
+  const closeEditTaskModal = () => {
+    setIsEditTaskModalOpen(false);
+  };
+
+  // Edit Ticket modal handlers
+  const openEditTicketModal = (ticket) => {
+    setSelectedTicket(ticket);
+    setIsEditTicketModalOpen(true);
+  };
+
+  const closeEditTicketModal = () => {
+    setIsEditTicketModalOpen(false);
+  };
+
+   // Create  modal handlers
+   const openCreateTicketModal = (ticket) => {
+    setSelectedTicket(ticket);
+    setIsCreateTicketModalOpen(true);
+  };
+
+  const closeCreateTicketModal = () => {
+    setIsCreateTicketModalOpen(false);
+  };
+
+  const openCreateTaskModal = (task) => {
+    setSelectedTask(task);
+    setIsCreateTaskModalOpen(true);
+  };
+
+  const closeCreateTaskModal = () => {
+    setIsCreateTaskModalOpen(false);
+  };
+
+  // Delete Task handler
+  const deleteTask = (taskId) => {
+    // Implement deletion logic here
+  };
+
+  // Delete Ticket handler
+  const deleteTicket = (ticketId) => {
+    // Implement deletion logic here
   };
 
   return (
     <div className="p-4">
-      {data.isEditModalOpen && (
-        <Modal isOpen={data.isEditModalOpen} onClose={closeEditModal}>
-          <h2>Edit Task</h2>
+
+    {isCreateTaskModalOpen && (
+        <Modal isOpen={isCreateTaskModalOpen} onClose={closeCreateTaskModal}>
+          <h2>Create Task</h2>
           <form>
-            <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder={selectedTask.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder={selectedTask.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder={selectedTask.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" placeholder={selectedTask.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
             <select className="border rounded p-2 w-full mb-2 cursor-pointer">
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
             </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create Task</button>
           </form>
         </Modal>
       )}
-      <Header />
+
+    {isCreateTicketModalOpen && (
+        <Modal isOpen={isCreateTicketModalOpen} onClose={closeCreateTicketModal}>
+          <h2>Create Ticket</h2>
+          <form>
+            <input placeholder={selectedTask.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder={selectedTask.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder={selectedTask.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" placeholder={selectedTask.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <select className="border rounded p-2 w-full mb-2 cursor-pointer">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create Ticket</button>
+          </form>
+        </Modal>
+      )}
+
+      {isEditTaskModalOpen && (
+        <Modal isOpen={isEditTaskModalOpen} onClose={closeEditTaskModal}>
+          <h2>Edit Task</h2>
+          <form>
+            <input placeholder={selectedTask.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder={selectedTask.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder={selectedTask.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" placeholder={selectedTask.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <select className="border rounded p-2 w-full mb-2 cursor-pointer" value={selectedTask.priority}>
+            <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Edit Task</button>
+          </form>
+        </Modal>
+      )}
+
+      {isEditTicketModalOpen && (
+        <Modal isOpen={isEditTicketModalOpen} onClose={closeEditTicketModal}>
+          <h2>Edit Ticket</h2>
+          <form>
+            <input placeholder={selectedTicket.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder={selectedTicket.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder={selectedTicket.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" placeholder={selectedTicket.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <select className="border rounded p-2 w-full mb-2 cursor-pointer" value={selectedTicket.priority}>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Edit Ticket</button>
+          </form>
+        </Modal>
+      )}
+      <Header
+        openCreateTicketModal={openCreateTicketModal}
+        openCreateTaskModal={openCreateTaskModal}
+      />
       {Object.entries(tickets).map((ticket, ticketIndex) => (
         <KanbanRow
           key ={ticketIndex} 
           ticketIndex ={ticketIndex}
           ticket = {ticket[1]}
-          openEditModal ={openEditModal}
+          openEditTaskModal ={openEditTaskModal}
+          openEditTicketModal={openEditTicketModal}
           data = {data}
         />
       ))}

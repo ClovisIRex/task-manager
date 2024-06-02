@@ -2,9 +2,9 @@ import React from 'react';
 import styles from "../scroll.module.css";
 
 
-const TaskCard = ({task, index, openEditModal }) => {
+const TaskCard = ({task, index, openEditTaskModal }) => {
   const handleClick = () => {
-    openEditModal(task); // Open the edit modal and pass the selected task
+    openEditTaskModal(task); // Open the edit modal and pass the selected task
   };
 
   return (

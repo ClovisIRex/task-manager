@@ -2,22 +2,11 @@ import React, { useState, useContext } from 'react';
 import Modal from '../Modals/CreateTicket'
 import KanbanContext from './Context/KanbanContext';
 
-const Header = () => {
+const Header = ({ openCreateTicketModal, openCreateTaskModal }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { kanbanData, setKanbanData } = useContext(KanbanContext); // Access the context
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-    setIsDropdownOpen(false); // Close the dropdown when modal is opened
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
 
   return (
@@ -39,32 +28,21 @@ const Header = () => {
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
               <button 
-                onClick={openModal} 
+                onClick={openCreateTicketModal} 
                 className="block px-4 py-2 text-blue-500 hover:bg-blue-100 w-full text-left cursor-pointer"
               >
                 Ticket
               </button>
-              <a href="#" className="block px-4 py-2 text-red-500 hover:bg-red-100 cursor-pointer">Task</a>
+              <button 
+                onClick={openCreateTaskModal} 
+                className="block px-4 py-2 text-red-500 hover:bg-red-100 w-full text-left cursor-pointer"
+              >
+                Task
+              </button>
             </div>
           )}
         </div>
       </div>
-
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2>Create Ticket</h2>
-        <form>
-          <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <input type="date" placeholder="Due Date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <select className="border rounded p-2 w-full mb-2 cursor-pointer">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create</button>
-        </form>
-      </Modal>
     </div>
   );
 };
