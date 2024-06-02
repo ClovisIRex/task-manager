@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Header from './Header';
 import KanbanRow from './KanbanRow';
 import EditTaskModal from '../Modals/EditTask';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
 import Modal from '../Modals/CreateTicket';
+import KanbanContext from './Context/KanbanContext';
 
 const KanbanBoard = () => {
+  const { kanbanData, setKanbanData } = useContext(KanbanContext); // Access the contex
+
   const getTasksByStatus = (status, tasks) => {
     return Object.values(tasks).filter(task => task.status === status);
   };
@@ -60,7 +63,7 @@ const KanbanBoard = () => {
     <div className="p-4">
       {data.isEditModalOpen && (
         <Modal isOpen={data.isEditModalOpen} onClose={closeEditModal}>
-          <h2>Create Ticket</h2>
+          <h2>Edit Task</h2>
           <form>
             <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
             <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
