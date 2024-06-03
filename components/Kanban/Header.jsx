@@ -1,6 +1,4 @@
 import React, { useState, useContext } from 'react';
-import Modal from '../Modals/CreateTicket'
-import KanbanContext from './Context/KanbanContext';
 
 const Header = ({ openCreateTicketModal, openCreateTaskModal }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

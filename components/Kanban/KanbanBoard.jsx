@@ -101,10 +101,10 @@ const KanbanBoard = () => {
         <Modal isOpen={isCreateTaskModalOpen} onClose={closeCreateTaskModal}>
           <h2>Create Task</h2>
           <form>
-            <input placeholder={selectedTask.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <textarea placeholder={selectedTask.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input placeholder={selectedTask.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input type="date" placeholder={selectedTask.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+            <input type="date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
             <select className="border rounded p-2 w-full mb-2 cursor-pointer">
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -119,20 +119,20 @@ const KanbanBoard = () => {
     {isCreateTicketModalOpen && (
         <Modal isOpen={isCreateTicketModalOpen} onClose={closeCreateTicketModal}>
           <h2>Create Ticket</h2>
-          <form>
-            <input placeholder={selectedTask.title} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <textarea placeholder={selectedTask.description} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input placeholder={selectedTask.owner} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <input type="date" placeholder={selectedTask.dueDate} className="border rounded p-2 w-full mb-2 cursor-pointer" />
-            <select className="border rounded p-2 w-full mb-2 cursor-pointer">
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create Ticket</button>
-          </form>
-        </Modal>
+        <form>
+          <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <input type="date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
+          <select className="border rounded p-2 w-full mb-2 cursor-pointer">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create Ticket</button>
+        </form>
+      </Modal>
       )}
 
       {isEditTaskModalOpen && (
