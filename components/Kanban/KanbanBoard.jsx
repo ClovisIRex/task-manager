@@ -149,7 +149,8 @@ const KanbanBoard = () => {
               <option value="High">High</option>
               <option value="Critical">Critical</option>
             </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Edit Task</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-2">Save Task</button>
+            <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Task</button>
           </form>
         </Modal>
       )}
@@ -168,7 +169,8 @@ const KanbanBoard = () => {
               <option value="High">High</option>
               <option value="Critical">Critical</option>
             </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Edit Ticket</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-2">Save Ticket</button>
+            <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Ticket</button>
           </form>
         </Modal>
       )}
@@ -176,11 +178,11 @@ const KanbanBoard = () => {
         openCreateTicketModal={openCreateTicketModal}
         openCreateTaskModal={openCreateTaskModal}
       />
-      {Object.entries(tickets).map((ticket, ticketIndex) => (
+      {tickets.map((ticket) => (
         <KanbanRow
-          key ={ticketIndex} 
-          ticketIndex ={ticketIndex}
-          ticket = {ticket[1]}
+          key ={ticket.id} 
+          ticketIndex ={ticket.id}
+          ticket = {ticket}
           openEditTaskModal ={openEditTaskModal}
           openEditTicketModal={openEditTicketModal}
           data = {data}

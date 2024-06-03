@@ -5,7 +5,7 @@ const KanbanRow = ({ ticketIndex, ticket, openEditTaskModal,openEditTicketModal,
   // Function to retrieve tasks for a specific ticket
   const getTasksForTicket = (ticket) => {
     let tasksIds = ticket.tasks
-    return Object.values(data.tasks).filter(task => tasksIds.includes(task.id));
+    return (data.tasks).filter(task => tasksIds.includes(task.id));
   };
 
   let tasksForTicket = getTasksForTicket(ticket);
