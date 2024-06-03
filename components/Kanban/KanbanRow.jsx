@@ -4,9 +4,14 @@ import KanbanColumn from './KanbanColumn';
 const KanbanRow = ({ ticketIndex, ticket, openEditTaskModal,openEditTicketModal, data}) => {
   // Function to retrieve tasks for a specific ticket
   const getTasksForTicket = (ticket) => {
-    let tasksIds = ticket.tasks
-    return (data.tasks).filter(task => tasksIds.includes(task.id));
+    if (!ticket.tasks || !Array.isArray(ticket.tasks)) {
+      return [];
+    }
+    let tasksIds = ticket.tasks;
+    return data.tasks.filter(task => tasksIds.includes(task.id));
   };
+  
+  
 
   let tasksForTicket = getTasksForTicket(ticket);
 

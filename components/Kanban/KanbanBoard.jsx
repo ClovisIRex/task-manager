@@ -84,14 +84,73 @@ const KanbanBoard = () => {
     setIsCreateTaskModalOpen(false);
   };
 
-  // Delete Task handler
+  const createTask = (newTask, ticketId) => {
+    setData(prevData => {
+      const updatedTasks = [...prevData.tasks, newTask];
+      const updatedTickets = prevData.tickets.map(ticket => {
+        if (ticket.id == ticketId) {
+          return {
+            ...ticket,
+            tasks: [...ticket.tasks, newTask.id]
+          };
+        }
+        return ticket;
+      });
+      return {
+        ...prevData,
+        tasks: updatedTasks,
+        tickets: updatedTickets
+      };
+    });
+    setIsCreateTaskModalOpen(false);
+  };
+  
+  const createTicket = (newTicket) => {
+    const updatedTickets = [...data.tickets, newTicket];
+    setData({ ...data, tickets: updatedTickets });
+    setIsCreateTicketModalOpen(false);
+  };
+  
   const deleteTask = (taskId) => {
-    // Implement deletion logic here
+    const updatedTasks = data.tasks.filter(task => task.id !== taskId);
+    setData({ ...data, tasks: updatedTasks });
+  };
+  
+  const deleteTicket = (ticketId) => {
+    const updatedTickets = data.tickets.filter(ticket => ticket.id !== ticketId);
+    setData({ ...data, tickets: updatedTickets });
   };
 
-  // Delete Ticket handler
-  const deleteTicket = (ticketId) => {
-    // Implement deletion logic here
+  const generateUniqueId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  };
+
+  const handleCreateTask = (e) => {
+    e.preventDefault();
+    const ticketId = e.target.elements[5].value;
+    const newTask = {
+      id: generateUniqueId(), // assuming you've implemented the generateUniqueId function
+      title: e.target.elements[0].value,
+      description: e.target.elements[1].value,
+      owner: e.target.elements[2].value,
+      dueDate: e.target.elements[3].value,
+      priority: e.target.elements[4].value,
+      status: "Unassigned"
+    };
+    createTask(newTask, ticketId); // assuming createTask function is defined
+  };
+
+  const handleCreateTicket = (e) => {
+    e.preventDefault();
+    const newTicket = {
+      id: generateUniqueId(), // assuming you've implemented the generateUniqueId function
+      title: e.target.elements[0].value,
+      owner: e.target.elements[1].value,
+      dueDate: e.target.elements[2].value,
+      priority: e.target.elements[3].value,
+      tasks: []
+    };
+    createTicket(newTicket); // assuming createTask function is defined
   };
 
   return (
@@ -100,7 +159,7 @@ const KanbanBoard = () => {
     {isCreateTaskModalOpen && (
         <Modal isOpen={isCreateTaskModalOpen} onClose={closeCreateTaskModal}>
           <h2>Create Task</h2>
-          <form>
+          <form onSubmit={handleCreateTask}>
             <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
             <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
             <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
@@ -111,6 +170,12 @@ const KanbanBoard = () => {
               <option value="High">High</option>
               <option value="Critical">Critical</option>
             </select>
+            <select className="border rounded p-2 w-full mb-2 cursor-pointer" name="ticket">
+              <option value="">Choose Ticket</option>
+              {data.tickets.map(ticket => (
+                <option key={ticket.id} value={ticket.id}>{ticket.title}</option>
+              ))}
+            </select>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Create Task</button>
           </form>
         </Modal>
@@ -119,9 +184,8 @@ const KanbanBoard = () => {
     {isCreateTicketModalOpen && (
         <Modal isOpen={isCreateTicketModalOpen} onClose={closeCreateTicketModal}>
           <h2>Create Ticket</h2>
-        <form>
+        <form onSubmit={handleCreateTicket}>
           <input placeholder="Title" className="border rounded p-2 w-full mb-2 cursor-pointer" />
-          <textarea placeholder="Description" className="border rounded p-2 w-full mb-2 cursor-pointer" />
           <input placeholder="Owner" className="border rounded p-2 w-full mb-2 cursor-pointer" />
           <input type="date" className="border rounded p-2 w-full mb-2 cursor-pointer" />
           <select className="border rounded p-2 w-full mb-2 cursor-pointer">
@@ -150,7 +214,7 @@ const KanbanBoard = () => {
               <option value="Critical">Critical</option>
             </select>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-2">Save Task</button>
-            <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Task</button>
+            {/* <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Task</button> */}
           </form>
         </Modal>
       )}
@@ -170,7 +234,7 @@ const KanbanBoard = () => {
               <option value="Critical">Critical</option>
             </select>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-2">Save Ticket</button>
-            <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Ticket</button>
+            {/* <button type="submit" className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer">Delete Ticket</button> */}
           </form>
         </Modal>
       )}
@@ -178,7 +242,7 @@ const KanbanBoard = () => {
         openCreateTicketModal={openCreateTicketModal}
         openCreateTaskModal={openCreateTaskModal}
       />
-      {tickets.map((ticket) => (
+      {data.tickets.map((ticket) => (
         <KanbanRow
           key ={ticket.id} 
           ticketIndex ={ticket.id}
