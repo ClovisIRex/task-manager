@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import Header from './Header';
 import KanbanRow from './KanbanRow';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
-import Modal from '../Modals/Modal';
+import CreateTaskModal from '../Modals/CreateTaskModal';
+import CreateTicketModal from '../Modals/CreateTicketModal';
+import EditTaskModal from '../Modals/EditTaskModal';
+import EditTicketModal from '../Modals/EditTicketModal';
 
 const KanbanBoard = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState({ 
-    editTask: false, 
-    editTicket: false, 
-    createTask: false, 
-    createTicket: false 
+  const [isModalOpen, setIsModalOpen] = useState({
+    editTask: false,
+    editTicket: false,
+    createTask: false,
+    createTicket: false
   });
 
   const tasks = mockTasks;
@@ -122,130 +125,40 @@ const KanbanBoard = () => {
 
   return (
     <div className="p-4">
-      {isModalOpen.createTask && (
-        <Modal isOpen={isModalOpen.createTask} onClose={() => closeModal('createTask')}>
-          <h2>Create Task</h2>
-          <form onSubmit={handleCreateTask}>
-            <input placeholder="Title" className="border rounded p-2 w-full mb-2" />
-            <textarea placeholder="Description" className="border rounded p-2 w-full mb-2" />
-            <input placeholder="Owner" className="border rounded p-2 w-full mb-2" />
-            <input type="date" className="border rounded p-2 w-full mb-2" />
-            <select className="border rounded p-2 w-full mb-2">
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-            <select className="border rounded p-2 w-full mb-2" name="ticket">
-              <option value="">Choose Ticket</option>
-              {data.tickets.map((ticket) => (
-                <option key={ticket.id} value={ticket.id}>
-                  {ticket.title}
-                </option>
-              ))}
-            </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-              Create Task
-            </button>
-          </form>
-        </Modal>
+      <CreateTaskModal
+        isOpen={isModalOpen.createTask}
+        onClose={() => closeModal('createTask')}
+        onSubmit={handleCreateTask}
+        tickets={data.tickets}
+      />
+
+      <CreateTicketModal
+        isOpen={isModalOpen.createTicket}
+        onClose={() => closeModal('createTicket')}
+        onSubmit={handleCreateTicket}
+      />
+
+      {selectedItem && (
+        <>
+          <EditTaskModal
+            isOpen={isModalOpen.editTask}
+            onClose={() => closeModal('editTask')}
+            task={selectedItem}
+          />
+
+          <EditTicketModal
+            isOpen={isModalOpen.editTicket}
+            onClose={() => closeModal('editTicket')}
+            ticket={selectedItem}
+          />
+        </>
       )}
 
-      {isModalOpen.createTicket && (
-        <Modal isOpen={isModalOpen.createTicket} onClose={() => closeModal('createTicket')}>
-          <h2>Create Ticket</h2>
-          <form onSubmit={handleCreateTicket}>
-            <input placeholder="Title" className="border rounded p-2 w-full mb-2" />
-            <input placeholder="Owner" className="border rounded p-2 w-full mb-2" />
-            <input type="date" className="border rounded p-2 w-full mb-2" />
-            <select className="border rounded p-2 w-full mb-2">
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-              Create Ticket
-            </button>
-          </form>
-        </Modal>
-      )}
+      <Header
+        openCreateTaskModal={() => openModal('createTask')}
+        openCreateTicketModal={() => openModal('createTicket')}
+      />
 
-      {isModalOpen.editTask && selectedItem && (
-        <Modal isOpen={isModalOpen.editTask} onClose={() => closeModal('editTask')}>
-          <h2>Edit Task</h2>
-          <form>
-            <input
-              defaultValue={selectedItem.title}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <textarea
-              defaultValue={selectedItem.description}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <input
-              defaultValue={selectedItem.owner}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <input
-              type="date"
-              defaultValue={selectedItem.dueDate}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <select
-              className="border rounded p-2 w-full mb-2"
-              defaultValue={selectedItem.priority}
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
-              Save Task
-            </button>
-          </form>
-        </Modal>
-      )}
-
-      {isModalOpen.editTicket && selectedItem && (
-        <Modal isOpen={isModalOpen.editTicket} onClose={() => closeModal('editTicket')}>
-          <h2>Edit Ticket</h2>
-          <form>
-            <input
-              defaultValue={selectedItem.title}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <textarea
-              defaultValue={selectedItem.description}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <input
-              defaultValue={selectedItem.owner}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <input
-              type="date"
-              defaultValue={selectedItem.dueDate}
-              className="border rounded p-2 w-full mb-2"
-            />
-            <select
-              className="border rounded p-2 w-full mb-2"
-              defaultValue={selectedItem.priority}
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
-              Save Ticket
-            </button>
-          </form>
-        </Modal>
-      )}
-
-      <Header openCreateTicketModal={() => openModal('createTicket')} openCreateTaskModal={() => openModal('createTask')} />
       {data.tickets.map((ticket) => (
         <KanbanRow
           key={ticket.id}
