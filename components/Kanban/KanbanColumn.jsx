@@ -15,10 +15,10 @@ const KanbanColumn = ({ title, tasks, color, id, ticket, openEditTaskModal, open
       <h2 className="text-xl font-bold mb-4">{title}</h2>
       <div className={isSingleCardLayout ? "grid grid-cols-1 gap-4" : "grid grid-cols-3 gap-4"}>
         {isSingleCardLayout ? (
-          <KanbanCard isTicket={true} key={ticket.id} task={ticket} openEditTaskModal={openEditTicketModal} />
+          <KanbanCard isTicket={true} key={ticket.id} task={ticket} openEditTaskModal={openEditTaskModal} openEditTicketModal={openEditTicketModal} />
         ) : (
           tasksForColumn.map(task => (
-            <KanbanCard isTicket={false} key={task.id} task={task} openEditTaskModal={openEditTaskModal} />
+            <KanbanCard isTicket={false} key={task.id} task={task} openEditTaskModal={openEditTaskModal} openEditTicketModal={openEditTicketModal} />
           ))
         )}
       </div>

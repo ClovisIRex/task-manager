@@ -1,10 +1,10 @@
 import React from 'react';
 import Modal from '../Modals/Modal';
 
-const EditTaskModal = ({ isOpen, onClose, task }) => (
+const EditTaskModal = ({ isOpen, onClose, task, onSubmit }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <h2>Edit Task</h2>
-    <form>
+    <form onSubmit={onSubmit}>
       <input defaultValue={task.title} className="border rounded p-2 w-full mb-2" />
       <textarea defaultValue={task.description} className="border rounded p-2 w-full mb-2" />
       <input defaultValue={task.owner} className="border rounded p-2 w-full mb-2" />

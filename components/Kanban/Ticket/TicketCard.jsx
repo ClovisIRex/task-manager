@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from "../scroll.module.css";
 
-const TicketCard = ({ ticket, openEditTaskModal }) => {
+const TicketCard = ({ ticket, openEditTicketModal }) => {
   const { title, owner, dueDate, priority } = ticket;
 
   const handleClick = () => {
-    openEditTaskModal(ticket);
+    openEditTicketModal(ticket);
   };
 
   return (

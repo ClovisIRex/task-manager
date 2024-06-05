@@ -8,7 +8,8 @@ import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
 
 const KanbanBoard = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTicket, setSelectedTicket] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState({
     editTask: false,
     editTicket: false,
@@ -40,12 +41,21 @@ const KanbanBoard = () => {
   });
 
   const openModal = (type, item = null) => {
-    setSelectedItem(item);
+    if (type === 'editTask' || type === 'createTask') {
+      setSelectedTask(item);
+    } else if (type === 'editTicket' || type === 'createTicket') {
+      setSelectedTicket(item);
+    }
     setIsModalOpen((prevState) => ({ ...prevState, [type]: true }));
   };
 
   const closeModal = (type) => {
     setIsModalOpen((prevState) => ({ ...prevState, [type]: false }));
+    if (type === 'editTask' || type === 'createTask') {
+      setSelectedTask(null);
+    } else if (type === 'editTicket' || type === 'createTicket') {
+      setSelectedTicket(null);
+    }
   };
 
   const createTask = (newTask, ticketId) => {
@@ -110,6 +120,28 @@ const KanbanBoard = () => {
     createTask(newTask, ticketId);
   };
 
+  const handleEditTask = (e) => {
+    e.preventDefault();
+    const updatedTask = {
+      ...selectedTask,
+      title: e.target.elements[0].value,
+      description: e.target.elements[1].value,
+      owner: e.target.elements[2].value,
+      dueDate: e.target.elements[3].value,
+      priority: e.target.elements[4].value,
+      status: selectedTask.status 
+    };
+  
+    setData((prevData) => ({
+      ...prevData,
+      tasks: prevData.tasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      )
+    }));
+  
+    closeModal('editTask');
+  };
+
   const handleCreateTicket = (e) => {
     e.preventDefault();
     const newTicket = {
@@ -121,6 +153,26 @@ const KanbanBoard = () => {
       tasks: []
     };
     createTicket(newTicket);
+  };
+
+  const handleEditTicket = (e) => {
+    e.preventDefault();
+    const updatedTicket = {
+      ...selectedTicket,
+      title: e.target.elements[0].value,
+      owner: e.target.elements[1].value,
+      dueDate: e.target.elements[2].value,
+      priority: e.target.elements[3].value
+    };
+  
+    setData((prevData) => ({
+      ...prevData,
+      tickets: prevData.tickets.map((ticket) =>
+        ticket.id === updatedTicket.id ? updatedTicket : ticket
+      )
+    }));
+  
+    closeModal('editTicket');
   };
 
   return (
@@ -138,20 +190,22 @@ const KanbanBoard = () => {
         onSubmit={handleCreateTicket}
       />
 
-      {selectedItem && (
-        <>
-          <EditTaskModal
-            isOpen={isModalOpen.editTask}
-            onClose={() => closeModal('editTask')}
-            task={selectedItem}
-          />
+      {selectedTask && (
+        <EditTaskModal
+          isOpen={isModalOpen.editTask}
+          onClose={() => closeModal('editTask')}
+          task={selectedTask}
+          onSubmit={handleEditTask}
+        />
+      )}
 
-          <EditTicketModal
-            isOpen={isModalOpen.editTicket}
-            onClose={() => closeModal('editTicket')}
-            ticket={selectedItem}
-          />
-        </>
+      {selectedTicket && (
+        <EditTicketModal
+          isOpen={isModalOpen.editTicket}
+          onClose={() => closeModal('editTicket')}
+          ticket={selectedTicket}
+          onSubmit={handleEditTicket}
+        />
       )}
 
       <Header
@@ -164,7 +218,7 @@ const KanbanBoard = () => {
           key={ticket.id}
           ticketIndex={ticket.id}
           ticket={ticket}
-          openEditTaskModal={() => openModal('editTask', ticket)}
+          openEditTaskModal={(task) => openModal('editTask', task)}
           openEditTicketModal={() => openModal('editTicket', ticket)}
           data={data}
         />

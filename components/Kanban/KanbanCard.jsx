@@ -3,8 +3,7 @@ import styles from "./scroll.module.css";
 import TicketCard from "./Ticket/TicketCard";
 import TaskCard from "./Task/TaskCard";
 
-
-const KanbanCard = ({ isTicket, task, index, openEditTaskModal }) => {
+const KanbanCard = ({ isTicket, task, index, openEditTaskModal, openEditTicketModal }) => {
   const handleClick = () => {
     openEditTaskModal(task); // Open the edit modal and pass the selected task
   };
@@ -12,12 +11,11 @@ const KanbanCard = ({ isTicket, task, index, openEditTaskModal }) => {
   return (
     <>
       {isTicket ? (
-          <TicketCard ticket={task} index={index} openEditTaskModal={openEditTaskModal} />
-        ) : (
-          <TaskCard task={task} index={index} openEditTaskModal={openEditTaskModal} />
+        <TicketCard ticket={task} index={index} openEditTicketModal={openEditTicketModal} />
+      ) : (
+        <TaskCard task={task} index={index} openEditTaskModal={openEditTaskModal} />
       )}
     </>
-      
   );
 };
 
