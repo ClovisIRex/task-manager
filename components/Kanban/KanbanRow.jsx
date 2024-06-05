@@ -25,7 +25,6 @@ const KanbanRow = ({ ticketIndex, ticket, openEditTaskModal,openEditTicketModal,
           tasks={tasksForTicket}
           color={data.colors[column]}
           id={data.ids[column]}
-          ticketId={ticket.id}
           ticket={ticket}
           openEditTaskModal={openEditTaskModal}
           openEditTicketModal={openEditTicketModal}

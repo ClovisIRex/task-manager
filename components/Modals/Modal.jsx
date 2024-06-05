@@ -1,25 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import styles from './Modal.module.css';
 
 const Modal = ({ isOpen, onClose, children }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setShowModal(true);
+      setIsVisible(true);
     } else {
-      setTimeout(() => setShowModal(false), 300); // Match the duration of the animation
+      setTimeout(() => setIsVisible(false), 300); // Match the duration of the animation
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEsc);
+    } else {
+      document.removeEventListener('keydown', handleEsc);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <>
-      {showModal && (
-        <div className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-          <div className={`fixed inset-0 bg-black transition-opacity duration-300 ${isOpen ? 'opacity-50' : 'opacity-0'}`}></div>
-          <div className={`bg-white p-4 rounded shadow-lg relative z-10 transform transition-transform duration-300 ${isOpen ? 'scale-100' : 'scale-75'}`} style={{ maxWidth: '400px' }}>
+      {isVisible && (
+        <div className={`${styles['modal-container']} ${isOpen ? styles['opacity-100'] : styles['opacity-0']}`}>
+          <div className={`${styles['modal-overlay']} ${isOpen ? styles['opacity-100'] : styles['opacity-0']}`} aria-hidden="true"></div>
+          <div 
+            className={`${styles['modal-content']} ${isOpen ? styles['scale-100'] : styles['scale-75']}`} 
+            role="dialog"
+            aria-modal="true"
+          >
             <button 
               onClick={onClose} 
-              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 cursor-pointer"
+              className={styles['modal-close-button']}
+              aria-label="Close modal"
             >
               X
             </button>
