@@ -63,7 +63,7 @@ const KanbanBoard = () => {
     setData((prevData) => {
       const updatedTasks = [...prevData.tasks, newTask];
       const updatedTickets = prevData.tickets.map((ticket) => {
-        if (ticket.id === Number(ticketId)) {
+        if (ticket.id === ticketId) {
           let taskForTickets = getTasksForTicket(prevData, ticket);
           if (
             taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
