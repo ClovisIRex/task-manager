@@ -92,6 +92,7 @@ const KanbanBoard = () => {
       ...prevData,
       tasks: prevData.tasks.filter((task) => task.id !== taskId)
     }));
+    closeModal('editTask');
   };
 
   const deleteTicket = (ticketId) => {
@@ -99,6 +100,7 @@ const KanbanBoard = () => {
       ...prevData,
       tickets: prevData.tickets.filter((ticket) => ticket.id !== ticketId)
     }));
+    closeModal('editTicket');
   };
 
   const generateUniqueId = () => {
@@ -196,6 +198,7 @@ const KanbanBoard = () => {
           onClose={() => closeModal('editTask')}
           task={selectedTask}
           onSubmit={handleEditTask}
+          onDelete={deleteTask}
         />
       )}
 
@@ -205,6 +208,7 @@ const KanbanBoard = () => {
           onClose={() => closeModal('editTicket')}
           ticket={selectedTicket}
           onSubmit={handleEditTicket}
+          onDelete={deleteTicket}
         />
       )}
 

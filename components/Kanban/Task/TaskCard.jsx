@@ -9,7 +9,7 @@ const TaskCard = ({ task, openEditTaskModal }) => {
   };
 
   return (
-    <div className={`p-4 bg-white rounded-lg shadow cursor-pointer ${styles.card}`} onClick={handleClick}>
+    <div className={`p-2 bg-white rounded-lg shadow cursor-pointer ${styles.card}`} onClick={handleClick}>
       <h3 className="font-bold">{title}</h3>
       <div className={styles['card-content']}>
         <p>Owner: {owner}</p>

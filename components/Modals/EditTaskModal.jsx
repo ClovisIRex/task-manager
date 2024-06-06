@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '../Modals/Modal';
 
-const EditTaskModal = ({ isOpen, onClose, task, onSubmit }) => (
+const EditTaskModal = ({ isOpen, onClose, task, onSubmit, onDelete }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <h2>Edit Task</h2>
     <form onSubmit={onSubmit}>
@@ -17,6 +17,9 @@ const EditTaskModal = ({ isOpen, onClose, task, onSubmit }) => (
       </select>
       <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
         Save Task
+      </button>
+      <button type="button" onClick={() => onDelete(task.id)} className="bg-red-500 text-white px-4 py-2 rounded">
+          Delete Task
       </button>
     </form>
   </Modal>
