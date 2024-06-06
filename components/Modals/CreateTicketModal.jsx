@@ -9,6 +9,7 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => (
       <input placeholder="Owner" className="border rounded p-2 w-full mb-2" />
       <input type="date" className="border rounded p-2 w-full mb-2" />
       <select className="border rounded p-2 w-full mb-2">
+        <option value="" disabled selected>Select Priority</option>
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
