@@ -13,7 +13,16 @@ const mockTickets = [
     title: 'Ticket 2',
     owner: 'John',
     status: 'To Do',
-    dueDate: '2024-06-01',
+    dueDate: '2024-05-01',
+    priority: 'Low',
+    tasks: [1, 4]
+  },
+  {
+    id: 3,
+    title: 'Ticket 3',
+    owner: 'John',
+    status: 'To Do',
+    dueDate: '2024-07-03',
     priority: 'Low',
     tasks: [1, 4]
   }

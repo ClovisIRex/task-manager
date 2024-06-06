@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../Modals/Modal';
 
 const CreateTaskModal = ({ isOpen, onClose, onSubmit, tickets }) => (
+
   <Modal isOpen={isOpen} onClose={onClose}>
     <h2>Create Task</h2>
     <form onSubmit={onSubmit}>

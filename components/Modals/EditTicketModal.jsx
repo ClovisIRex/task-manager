@@ -6,7 +6,6 @@ const EditTicketModal = ({ isOpen, onClose, ticket, onSubmit, onDelete }) => (
     <h2>Edit Ticket</h2>
     <form onSubmit={onSubmit}>
       <input defaultValue={ticket.title} className="border rounded p-2 w-full mb-2" />
-      <textarea defaultValue={ticket.description} className="border rounded p-2 w-full mb-2" />
       <input defaultValue={ticket.owner} className="border rounded p-2 w-full mb-2" />
       <input type="date" defaultValue={ticket.dueDate} className="border rounded p-2 w-full mb-2" />
       <select className="border rounded p-2 w-full mb-2" defaultValue={ticket.priority}>

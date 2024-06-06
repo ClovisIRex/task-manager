@@ -1,16 +1,9 @@
 import React from 'react';
 import KanbanColumn from './KanbanColumn';
-
+import {getTasksForTicket} from './Utils'
 const KanbanRow = ({ ticketIndex, ticket, openEditTaskModal, openEditTicketModal, data }) => {
-  const getTasksForTicket = (ticket) => {
-    if (!ticket.tasks || !Array.isArray(ticket.tasks)) {
-      return [];
-    }
-    let tasksIds = ticket.tasks;
-    return data.tasks.filter(task => tasksIds.includes(task.id));
-  };
-
-  let tasksForTicket = getTasksForTicket(ticket);
+ 
+  let tasksForTicket = getTasksForTicket(data, ticket);
 
   return (
     <div className="grid grid-cols-5 gap-4 mt-4" key={ticketIndex}>

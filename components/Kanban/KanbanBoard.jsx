@@ -6,6 +6,7 @@ import CreateTaskModal from '../Modals/CreateTaskModal';
 import CreateTicketModal from '../Modals/CreateTicketModal';
 import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
+import { getTasksForTicket } from './Utils'
 
 const KanbanBoard = () => {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -62,11 +63,16 @@ const KanbanBoard = () => {
     setData((prevData) => {
       const updatedTasks = [...prevData.tasks, newTask];
       const updatedTickets = prevData.tickets.map((ticket) => {
-        if (ticket.id === ticketId) {
-          return {
-            ...ticket,
-            tasks: [...ticket.tasks, newTask.id]
-          };
+        if (ticket.id === Number(ticketId)) {
+          let taskForTickets = getTasksForTicket(prevData, ticket)
+          if (taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
+            alert("Can't create more than 3 unassigned tasks")
+          } else {
+            return {
+              ...ticket,
+              tasks: [...ticket.tasks, newTask.id]
+            };
+          }
         }
         return ticket;
       });
@@ -109,7 +115,7 @@ const KanbanBoard = () => {
 
   const handleCreateTask = (e) => {
     e.preventDefault();
-    const newTask = {
+    let newTask = {
       id: generateUniqueId(),
       title: e.target.elements[0].value,
       description: e.target.elements[1].value,
@@ -118,8 +124,15 @@ const KanbanBoard = () => {
       priority: e.target.elements[4].value,
       status: 'Unassigned'
     };
-    const ticketId = e.target.elements[5].value;
-    createTask(newTask, ticketId);
+    
+    let isEmptyFields = !Object.values(newTask).every(x => x !== null && x !== '');
+
+    if (isEmptyFields) {
+      alert("Please fill out all the fields")
+    } else {
+      const ticketId = e.target.elements[5].value;
+      createTask(newTask, ticketId);
+    }
   };
 
   const handleEditTask = (e) => {
@@ -152,9 +165,16 @@ const KanbanBoard = () => {
       owner: e.target.elements[1].value,
       dueDate: e.target.elements[2].value,
       priority: e.target.elements[3].value,
-      tasks: []
     };
-    createTicket(newTicket);
+
+    let isEmptyFields = !Object.values(newTicket).every(x => x !== null && x !== '');
+
+    if (isEmptyFields) {
+      alert("Please fill out all the fields")
+    } else {
+      newTicket.tasks = []
+      createTicket(newTicket);
+    }
   };
 
   const handleEditTicket = (e) => {

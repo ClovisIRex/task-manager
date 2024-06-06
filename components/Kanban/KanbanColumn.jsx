@@ -13,7 +13,7 @@ const KanbanColumn = ({ title, tasks, color, id, ticket, openEditTaskModal, open
   return (
     <div className={`${styles.column} p-4 rounded ${color}`}>
       <h2 className="text-xl font-bold mb-4">{title}</h2>
-      <div className={isSingleCardLayout ? "grid grid-cols-1 gap-2" : "grid grid-cols-3"}>
+      <div className={isSingleCardLayout ? "grid grid-cols-1 gap-2" : "grid grid-cols-3 gap-2"}>
         {isSingleCardLayout ? (
           <KanbanCard isTicket={true} key={ticket.id} task={ticket} openEditTaskModal={openEditTaskModal} openEditTicketModal={openEditTicketModal} />
         ) : (
