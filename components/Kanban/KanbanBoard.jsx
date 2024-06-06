@@ -6,7 +6,7 @@ import CreateTaskModal from '../Modals/CreateTaskModal';
 import CreateTicketModal from '../Modals/CreateTicketModal';
 import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
-import { getTasksForTicket } from './Utils'
+import { getTasksForTicket } from './Utils';
 
 const KanbanBoard = () => {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -15,7 +15,7 @@ const KanbanBoard = () => {
     editTask: false,
     editTicket: false,
     createTask: false,
-    createTicket: false
+    createTicket: false,
   });
 
   const tasks = mockTasks;
@@ -30,15 +30,15 @@ const KanbanBoard = () => {
       Unassigned: 'bg-purple-100',
       'To Do': 'bg-blue-100',
       'In Progress': 'bg-yellow-100',
-      Done: 'bg-green-100'
+      Done: 'bg-green-100',
     },
     ids: {
       Ticket: 0,
       Unassigned: 1,
       'To Do': 2,
       'In Progress': 3,
-      Done: 4
-    }
+      Done: 4,
+    },
   });
 
   const openModal = (type, item = null) => {
@@ -64,9 +64,10 @@ const KanbanBoard = () => {
       const updatedTasks = [...prevData.tasks, newTask];
       const updatedTickets = prevData.tickets.map((ticket) => {
         if (ticket.id === Number(ticketId)) {
-          let taskForTickets = getTasksForTicket(prevData, ticket)
-          if (taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
-            alert("Can't create more than 3 unassigned tasks")
+          let taskForTickets = getTasksForTicket(prevData, ticket);
+          if (
+            taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
+            alert("Can't create more than 3 unassigned tasks");
           } else {
             return {
               ...ticket,
@@ -124,11 +125,13 @@ const KanbanBoard = () => {
       priority: e.target.elements[4].value,
       status: 'Unassigned'
     };
-    
-    let isEmptyFields = !Object.values(newTask).every(x => x !== null && x !== '');
+
+    let isEmptyFields = !Object.values(newTask).every(
+      (x) => x !== null && x !== ''
+    );
 
     if (isEmptyFields) {
-      alert("Please fill out all the fields")
+      alert('Please fill out all the fields');
     } else {
       const ticketId = e.target.elements[5].value;
       createTask(newTask, ticketId);
@@ -144,16 +147,16 @@ const KanbanBoard = () => {
       owner: e.target.elements[2].value,
       dueDate: e.target.elements[3].value,
       priority: e.target.elements[4].value,
-      status: selectedTask.status 
+      status: selectedTask.status,
     };
-  
+
     setData((prevData) => ({
       ...prevData,
       tasks: prevData.tasks.map((task) =>
         task.id === updatedTask.id ? updatedTask : task
-      )
+      ),
     }));
-  
+
     closeModal('editTask');
   };
 
@@ -167,12 +170,14 @@ const KanbanBoard = () => {
       priority: e.target.elements[3].value,
     };
 
-    let isEmptyFields = !Object.values(newTicket).every(x => x !== null && x !== '');
+    let isEmptyFields = !Object.values(newTicket).every(
+      (x) => x !== null && x !== ''
+    );
 
     if (isEmptyFields) {
-      alert("Please fill out all the fields")
+      alert('Please fill out all the fields');
     } else {
-      newTicket.tasks = []
+      newTicket.tasks = [];
       createTicket(newTicket);
     }
   };
@@ -184,16 +189,16 @@ const KanbanBoard = () => {
       title: e.target.elements[0].value,
       owner: e.target.elements[1].value,
       dueDate: e.target.elements[2].value,
-      priority: e.target.elements[3].value
+      priority: e.target.elements[3].value,
     };
-  
+
     setData((prevData) => ({
       ...prevData,
       tickets: prevData.tickets.map((ticket) =>
         ticket.id === updatedTicket.id ? updatedTicket : ticket
-      )
+      ),
     }));
-  
+
     closeModal('editTicket');
   };
 
@@ -237,16 +242,24 @@ const KanbanBoard = () => {
         openCreateTicketModal={() => openModal('createTicket')}
       />
 
-      {data.tickets.map((ticket) => (
-        <KanbanRow
-          key={ticket.id}
-          ticketIndex={ticket.id}
-          ticket={ticket}
-          openEditTaskModal={(task) => openModal('editTask', task)}
-          openEditTicketModal={() => openModal('editTicket', ticket)}
-          data={data}
-        />
-      ))}
+      {data.tickets.length === 0 ? (
+        <div className="justify-center items-center bg-gray-200 bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="text-center text-gray-500 my-8">Create your first ticket</div>
+          </div>
+        </div>
+      ) : (
+        data.tickets.map((ticket) => (
+          <KanbanRow
+            key={ticket.id}
+            ticketIndex={ticket.id}
+            ticket={ticket}
+            openEditTaskModal={(task) => openModal('editTask', task)}
+            openEditTicketModal={() => openModal('editTicket', ticket)}
+            data={data}
+          />
+        ))
+      )}
     </div>
   );
 };

@@ -24,7 +24,7 @@ const mockTickets = [
     status: 'To Do',
     dueDate: '2024-07-03',
     priority: 'Low',
-    tasks: [1, 4]
+    tasks: []
   }
 ];
 
