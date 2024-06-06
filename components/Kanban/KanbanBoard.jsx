@@ -19,11 +19,11 @@ const KanbanBoard = () => {
   });
 
   const tasks = mockTasks;
-  const tickets = mockTickets;
+  const initialTickets = mockTickets;
 
   const [data, setData] = useState({
     tasks,
-    tickets,
+    tickets: initialTickets,
     columns: ['Ticket', 'Unassigned', 'To Do', 'In Progress', 'Done'],
     colors: {
       Ticket: 'bg-red-100',
@@ -201,6 +201,20 @@ const KanbanBoard = () => {
 
     closeModal('editTicket');
   };
+
+  // // Filtering function based on date range
+  // const filterTicketsByDate = () => {
+  //   const filteredTickets = data.tickets.filter(ticket => {
+  //     const ticketDate = new Date(ticket.dueDate);
+  //     return ticketDate >= new Date(startDate) && ticketDate <= new Date(endDate);
+  //   });
+  //   return filteredTickets;
+  // };
+
+  // const filteredTickets = filterTicketsByDate();
+
+  //TODO implemet datefiler with context
+
 
   return (
     <div className="p-4">
