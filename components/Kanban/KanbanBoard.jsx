@@ -12,6 +12,7 @@ import { getTasksForTicket } from './Utils';
 const KanbanBoard = () => {
 
   const [tickets, setTickets] = useState([]);
+  
   const [loading, setLoading] = useState(true); // Add loading state
 
 
