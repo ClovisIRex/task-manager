@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import KanbanRow from './KanbanRow';
 import { mockTasks, mockTickets } from '@/mock/mockTasks';
@@ -8,7 +8,31 @@ import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
 import { getTasksForTicket } from './Utils';
 
+
 const KanbanBoard = () => {
+
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+
+
+  useEffect(() => {
+    async function fetchTickets() {
+      try {
+        const response = await fetch('/api/tickets');
+        if (!response.ok) {
+          throw new Error('Failed to fetch tickets');
+        }
+        const ticketsData = await response.json();
+        setTickets(ticketsData);
+        setLoading(false); // Update loading state when data is fetched
+      } catch (error) {
+        console.error(error);
+        setLoading(false); // Update loading state when data is fetched
+      }
+    }
+    fetchTickets();
+  }, []);
+
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState({
@@ -19,11 +43,10 @@ const KanbanBoard = () => {
   });
 
   const tasks = mockTasks;
-  const initialTickets = mockTickets;
 
   const [data, setData] = useState({
     tasks,
-    tickets: initialTickets,
+    tickets,
     columns: ['Ticket', 'Unassigned', 'To Do', 'In Progress', 'Done'],
     colors: {
       Ticket: 'bg-red-100',
@@ -60,7 +83,7 @@ const KanbanBoard = () => {
   };
 
   const createTask = (newTask, ticketId) => {
-    setData((prevData) => {
+    setData((prevData,) => {
       const updatedTasks = [...prevData.tasks, newTask];
       const updatedTickets = prevData.tickets.map((ticket) => {
         if (ticket.id === ticketId) {
@@ -256,14 +279,19 @@ const KanbanBoard = () => {
         openCreateTicketModal={() => openModal('createTicket')}
       />
 
-      {data.tickets.length === 0 ? (
+      {loading ? ( // Render loading spinner while loading is true
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      ) :
+      (tickets.length === 0 ? (
         <div className="justify-center items-center bg-gray-200 bg-opacity-50">
           <div className="bg-white p-8 rounded-lg shadow-lg">
             <div className="text-center text-gray-500 my-8">Create your first ticket</div>
           </div>
         </div>
       ) : (
-        data.tickets.map((ticket) => (
+        tickets.map((ticket) => (
           <KanbanRow
             key={ticket.id}
             ticketIndex={ticket.id}
@@ -273,7 +301,7 @@ const KanbanBoard = () => {
             data={data}
           />
         ))
-      )}
+      ))}
     </div>
   );
 };

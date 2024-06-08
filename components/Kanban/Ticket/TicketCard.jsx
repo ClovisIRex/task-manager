@@ -11,7 +11,7 @@ const TicketCard = ({ ticket, openEditTicketModal }) => {
   return (
     <div className={`p-4 bg-white rounded-lg shadow cursor-pointer ${styles.card}`} onClick={handleClick}>
       <h3 className="font-bold">{title}</h3>
-      <div className={styles['card-content']}>
+      <div className={styles['card-content ticket-content']}>
         <p>Owner: {owner}</p>
         <p>Due: {dueDate}</p>
         <p>Priority: {priority}</p>

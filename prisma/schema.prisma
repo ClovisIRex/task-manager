@@ -14,7 +14,7 @@ generator client {
 }
 
 model Ticket {
-  id          Int      @id @default(autoincrement())
+  id          String   @unique
   title       String
   description String
   owner       String
@@ -25,13 +25,13 @@ model Ticket {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
+  id          String   @unique
   title       String
   description String
   owner       String
   status      String
   priority    String
-  ticketId    Int
+  ticketId    String
   ticket      Ticket   @relation(fields: [ticketId], references: [id])
 }
 
