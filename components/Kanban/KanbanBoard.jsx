@@ -11,9 +11,15 @@ import { getTasksForTicket } from './Utils';
 
 const KanbanBoard = () => {
 
-  const [tickets, setTickets] = useState([]);
   
   const [loading, setLoading] = useState(true); // Add loading state
+
+  const updateTickets = (newTickets) => {
+    setData(prevData => ({
+      ...prevData,
+      tickets: newTickets
+    }));
+  };
 
 
   useEffect(() => {
@@ -24,7 +30,7 @@ const KanbanBoard = () => {
           throw new Error('Failed to fetch tickets');
         }
         const ticketsData = await response.json();
-        setTickets(ticketsData);
+        updateTickets(ticketsData);
         setLoading(false); // Update loading state when data is fetched
       } catch (error) {
         console.error(error);
@@ -33,6 +39,8 @@ const KanbanBoard = () => {
     }
     fetchTickets();
   }, []);
+
+
 
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -47,7 +55,7 @@ const KanbanBoard = () => {
 
   const [data, setData] = useState({
     tasks,
-    tickets,
+    tickets : [],
     columns: ['Ticket', 'Unassigned', 'To Do', 'In Progress', 'Done'],
     colors: {
       Ticket: 'bg-red-100',
@@ -285,14 +293,14 @@ const KanbanBoard = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
         </div>
       ) :
-      (tickets.length === 0 ? (
+      (data.tickets.length === 0 ? (
         <div className="justify-center items-center bg-gray-200 bg-opacity-50">
           <div className="bg-white p-8 rounded-lg shadow-lg">
             <div className="text-center text-gray-500 my-8">Create your first ticket</div>
           </div>
         </div>
       ) : (
-        tickets.map((ticket) => (
+        data.tickets.map((ticket) => (
           <KanbanRow
             key={ticket.id}
             ticketIndex={ticket.id}
