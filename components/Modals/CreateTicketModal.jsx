@@ -7,6 +7,7 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => (
     <form onSubmit={onSubmit}>
       <input placeholder="Title" className="border rounded p-2 w-full mb-2" />
       <input placeholder="Owner" className="border rounded p-2 w-full mb-2" />
+      <textarea placeholder="Description" className="border rounded p-2 w-full mb-2" />
       <input type="date" className="border rounded p-2 w-full mb-2" />
       <select className="border rounded p-2 w-full mb-2">
         <option value="" disabled selected>Select Priority</option>

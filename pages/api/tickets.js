@@ -1,5 +1,5 @@
+import { extractDate } from '@/components/Kanban/Utils';
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
@@ -18,7 +18,11 @@ export default async function handler(req, res) {
 
 async function getTickets(req, res) {
   try {
-    const tickets = await prisma.ticket.findMany();
+    let tickets = await prisma.ticket.findMany();
+    tickets = tickets.map(ticket => {
+      let dateOnly = extractDate(ticket.dueDate)
+      return {...ticket, dueDate: dateOnly}
+    });
     res.status(200).json(tickets);
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while fetching tickets' });

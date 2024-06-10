@@ -6,7 +6,7 @@ import CreateTaskModal from '../Modals/CreateTaskModal';
 import CreateTicketModal from '../Modals/CreateTicketModal';
 import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
-import { getTasksForTicket, generateUniqueId } from './Utils';
+import { getTasksForTicket, generateUniqueId, constructDateTime } from './Utils';
 import { fetchTickets, createNewTicket, setUpdateTicket, removeTicket} from './actions/TicketActions'
 
 const KanbanBoard = () => {
