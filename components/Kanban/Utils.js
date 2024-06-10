@@ -1,4 +1,4 @@
-function getTasksForTicket(data, ticket)  {
+const getTasksForTicket = (data, ticket) => {
     if (!ticket.tasks || !Array.isArray(ticket.tasks)) {
       return [];
     }
@@ -7,6 +7,12 @@ function getTasksForTicket(data, ticket)  {
 };
 
 
+const generateUniqueId = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
+
 module.exports = {
-    getTasksForTicket
+    getTasksForTicket,
+    generateUniqueId
 };

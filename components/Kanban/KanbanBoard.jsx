@@ -6,8 +6,8 @@ import CreateTaskModal from '../Modals/CreateTaskModal';
 import CreateTicketModal from '../Modals/CreateTicketModal';
 import EditTaskModal from '../Modals/EditTaskModal';
 import EditTicketModal from '../Modals/EditTicketModal';
-import { getTasksForTicket } from './Utils';
-
+import { getTasksForTicket, generateUniqueId } from './Utils';
+import { fetchTickets, createNewTicket, setUpdateTicket, removeTicket} from './actions/TicketActions'
 
 const KanbanBoard = () => {
 
@@ -21,23 +21,169 @@ const KanbanBoard = () => {
     }));
   };
 
+  const createTicket = (newTicket) => {
+    setData((prevData) => ({
+      ...prevData,
+      tickets: [...prevData.tickets, newTicket]
+    }));
+    closeModal('createTicket');
+  };
+
+  const deleteTicket = async (ticketId) => {
+    try {
+      closeModal('editTicket');
+      setLoading(true);
+      await removeTicket(ticketId);
+      setLoading(false);
+      setData((prevData) => ({
+        ...prevData,
+        tickets: prevData.tickets.filter((ticket) => ticket.id !== ticketId)
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateTicket = (e) => {
+    e.preventDefault();
+    const newTicket = {
+      id: generateUniqueId(),
+      title: e.target.elements[0].value,
+      owner: e.target.elements[1].value,
+      dueDate: e.target.elements[2].value,
+      priority: e.target.elements[3].value,
+    };
+
+    let isEmptyFields = !Object.values(newTicket).every(
+      (x) => x !== null && x !== ''
+    );
+
+    if (isEmptyFields) {
+      alert('Please fill out all the fields');
+    } else {
+      newTicket.tasks = [];
+      createTicket(newTicket);
+    }
+  };
+
+  const handleEditTicket = (e) => {
+    e.preventDefault();
+    const updatedTicket = {
+      ...selectedTicket,
+      title: e.target.elements[0].value,
+      owner: e.target.elements[1].value,
+      dueDate: e.target.elements[2].value,
+      priority: e.target.elements[3].value,
+    };
+
+    setData((prevData) => ({
+      ...prevData,
+      tickets: prevData.tickets.map((ticket) =>
+        ticket.id === updatedTicket.id ? updatedTicket : ticket
+      ),
+    }));
+
+    closeModal('editTicket');
+  };
+
+
+
+  const createTask = (newTask, ticketId) => {
+    setData((prevData,) => {
+      const updatedTasks = [...prevData.tasks, newTask];
+      const updatedTickets = prevData.tickets.map((ticket) => {
+        if (ticket.id === ticketId) {
+          let taskForTickets = getTasksForTicket(prevData, ticket);
+          if (
+            taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
+            alert("Can't create more than 3 unassigned tasks");
+          } else {
+            return {
+              ...ticket,
+              tasks: [...ticket.tasks, newTask.id]
+            };
+          }
+        }
+        return ticket;
+      });
+      return {
+        ...prevData,
+        tasks: updatedTasks,
+        tickets: updatedTickets
+      };
+    });
+    closeModal('createTask');
+  };
+
+  const deleteTask = (taskId) => {
+    setData((prevData) => ({
+      ...prevData,
+      tasks: prevData.tasks.filter((task) => task.id !== taskId)
+    }));
+    closeModal('editTask');
+  };
+
+  const handleCreateTask = (e) => {
+    e.preventDefault();
+    let newTask = {
+      id: generateUniqueId(),
+      title: e.target.elements[0].value,
+      description: e.target.elements[1].value,
+      owner: e.target.elements[2].value,
+      dueDate: e.target.elements[3].value,
+      priority: e.target.elements[4].value,
+      status: 'Unassigned'
+    };
+
+    let isEmptyFields = !Object.values(newTask).every(
+      (x) => x !== null && x !== ''
+    );
+
+    if (isEmptyFields) {
+      alert('Please fill out all the fields');
+    } else {
+      const ticketId = e.target.elements[5].value;
+      createTask(newTask, ticketId);
+    }
+  };
+
+  const handleEditTask = (e) => {
+    e.preventDefault();
+    const updatedTask = {
+      ...selectedTask,
+      title: e.target.elements[0].value,
+      description: e.target.elements[1].value,
+      owner: e.target.elements[2].value,
+      dueDate: e.target.elements[3].value,
+      priority: e.target.elements[4].value,
+      status: selectedTask.status,
+    };
+
+    setData((prevData) => ({
+      ...prevData,
+      tasks: prevData.tasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      ),
+    }));
+
+    closeModal('editTask');
+  };
+
+
+
 
   useEffect(() => {
-    async function fetchTickets() {
+    async function loadTickets() {
       try {
-        const response = await fetch('/api/tickets');
-        if (!response.ok) {
-          throw new Error('Failed to fetch tickets');
-        }
-        const ticketsData = await response.json();
-        updateTickets(ticketsData);
-        setLoading(false); // Update loading state when data is fetched
+        const ticketsData = await fetchTickets();
+        setData((prevData) => ({ ...prevData, tickets: ticketsData }));
+        setLoading(false);
       } catch (error) {
         console.error(error);
-        setLoading(false); // Update loading state when data is fetched
+        setLoading(false);
       }
     }
-    fetchTickets();
+    loadTickets();
   }, []);
 
 
@@ -91,148 +237,7 @@ const KanbanBoard = () => {
     }
   };
 
-  const createTask = (newTask, ticketId) => {
-    setData((prevData,) => {
-      const updatedTasks = [...prevData.tasks, newTask];
-      const updatedTickets = prevData.tickets.map((ticket) => {
-        if (ticket.id === ticketId) {
-          let taskForTickets = getTasksForTicket(prevData, ticket);
-          if (
-            taskForTickets.filter((task) => task.status === 'Unassigned').length === 3) {
-            alert("Can't create more than 3 unassigned tasks");
-          } else {
-            return {
-              ...ticket,
-              tasks: [...ticket.tasks, newTask.id]
-            };
-          }
-        }
-        return ticket;
-      });
-      return {
-        ...prevData,
-        tasks: updatedTasks,
-        tickets: updatedTickets
-      };
-    });
-    closeModal('createTask');
-  };
-
-  const createTicket = (newTicket) => {
-    setData((prevData) => ({
-      ...prevData,
-      tickets: [...prevData.tickets, newTicket]
-    }));
-    closeModal('createTicket');
-  };
-
-  const deleteTask = (taskId) => {
-    setData((prevData) => ({
-      ...prevData,
-      tasks: prevData.tasks.filter((task) => task.id !== taskId)
-    }));
-    closeModal('editTask');
-  };
-
-  const deleteTicket = (ticketId) => {
-    setData((prevData) => ({
-      ...prevData,
-      tickets: prevData.tickets.filter((ticket) => ticket.id !== ticketId)
-    }));
-    closeModal('editTicket');
-  };
-
-  const generateUniqueId = () => {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  };
-
-  const handleCreateTask = (e) => {
-    e.preventDefault();
-    let newTask = {
-      id: generateUniqueId(),
-      title: e.target.elements[0].value,
-      description: e.target.elements[1].value,
-      owner: e.target.elements[2].value,
-      dueDate: e.target.elements[3].value,
-      priority: e.target.elements[4].value,
-      status: 'Unassigned'
-    };
-
-    let isEmptyFields = !Object.values(newTask).every(
-      (x) => x !== null && x !== ''
-    );
-
-    if (isEmptyFields) {
-      alert('Please fill out all the fields');
-    } else {
-      const ticketId = e.target.elements[5].value;
-      createTask(newTask, ticketId);
-    }
-  };
-
-  const handleEditTask = (e) => {
-    e.preventDefault();
-    const updatedTask = {
-      ...selectedTask,
-      title: e.target.elements[0].value,
-      description: e.target.elements[1].value,
-      owner: e.target.elements[2].value,
-      dueDate: e.target.elements[3].value,
-      priority: e.target.elements[4].value,
-      status: selectedTask.status,
-    };
-
-    setData((prevData) => ({
-      ...prevData,
-      tasks: prevData.tasks.map((task) =>
-        task.id === updatedTask.id ? updatedTask : task
-      ),
-    }));
-
-    closeModal('editTask');
-  };
-
-  const handleCreateTicket = (e) => {
-    e.preventDefault();
-    const newTicket = {
-      id: generateUniqueId(),
-      title: e.target.elements[0].value,
-      owner: e.target.elements[1].value,
-      dueDate: e.target.elements[2].value,
-      priority: e.target.elements[3].value,
-    };
-
-    let isEmptyFields = !Object.values(newTicket).every(
-      (x) => x !== null && x !== ''
-    );
-
-    if (isEmptyFields) {
-      alert('Please fill out all the fields');
-    } else {
-      newTicket.tasks = [];
-      createTicket(newTicket);
-    }
-  };
-
-  const handleEditTicket = (e) => {
-    e.preventDefault();
-    const updatedTicket = {
-      ...selectedTicket,
-      title: e.target.elements[0].value,
-      owner: e.target.elements[1].value,
-      dueDate: e.target.elements[2].value,
-      priority: e.target.elements[3].value,
-    };
-
-    setData((prevData) => ({
-      ...prevData,
-      tickets: prevData.tickets.map((ticket) =>
-        ticket.id === updatedTicket.id ? updatedTicket : ticket
-      ),
-    }));
-
-    closeModal('editTicket');
-  };
+  
 
   // // Filtering function based on date range
   // const filterTicketsByDate = () => {

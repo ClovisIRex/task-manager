@@ -1,6 +1,5 @@
 const mockTickets = [
   {
-    id: 'lx3b2jz3bwvg2xh23u',
     title: 'Ticket 1',
     owner: 'John',
     status: 'To Do',
@@ -9,7 +8,6 @@ const mockTickets = [
     tasks: [2, 3, 5]
   },
   {
-    id: 'lx3b32c3plqs0m1qc1s',
     title: 'Ticket 2',
     owner: 'John',
     status: 'To Do',
@@ -40,7 +38,7 @@ const mockTasks = [
   },
   {
     id: 2,
-    title: 'Task 2',
+    title: '.json(updatedTicket)',
     description: 'task2 desc',
     owner: 'Jane',
     status: 'To Do',

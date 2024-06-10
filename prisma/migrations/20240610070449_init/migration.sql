@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Ticket" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "owner" TEXT NOT NULL,
@@ -13,13 +13,13 @@ CREATE TABLE "Ticket" (
 
 -- CreateTable
 CREATE TABLE "Task" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "owner" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "priority" TEXT NOT NULL,
-    "ticketId" INTEGER NOT NULL,
+    "ticketId" TEXT NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );

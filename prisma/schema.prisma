@@ -14,7 +14,7 @@ generator client {
 }
 
 model Ticket {
-  id          String   @unique
+  id          String @id @default(dbgenerated("gen_random_uuid()"))
   title       String
   description String
   owner       String
@@ -25,7 +25,7 @@ model Ticket {
 }
 
 model Task {
-  id          String   @unique
+  id          String @id @default(dbgenerated("gen_random_uuid()"))
   title       String
   description String
   owner       String
